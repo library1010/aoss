@@ -40,7 +40,7 @@ transferJar() {
 
 yesNoSelection() {
     local message=$1
-    
+
     echo $message
     select yn in "Yes" "No"; do
 	case $yn in
@@ -51,7 +51,7 @@ yesNoSelection() {
 }
 
 checkSqlbatchBuildProcessRunning() {
-    local isRunning=$(ps aux | grep java | grep -v grep | grep sqlbatch)
+    local isRunning=$(ps aux | grep build_sqlbatch.sh | grep -v grep)
 
     if [ "$isRunning" != "" ];then
 	echo "SQLbatch project is running. Probably someone's trying to build jar file."
