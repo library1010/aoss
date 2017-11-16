@@ -50,15 +50,25 @@ yesNoSelection() {
     done
 }
 
+checkSqlbatchBuildProcessRunning() {
+    local isRunning=$(ps aux | grep java | grep -v grep | grep sqlbatch)
+
+    if [ "$isRunning" != "" ];then
+	echo "SQLbatch project is running. Probably someone's trying to build jar file."
+        exit 1
+    fi
+}
+
 doMain() {
     local branch_name="$1"
 
     if [ -z $branch_name ]; then
 	branch_name=default
     fi
-    
+
+    checkSqlbatchBuildProcessRunning
     buildJar $branch_name testinghanoi
-    backupJar
+    # backupJar
     yesNoSelection "Do you want to continue to transfer file to dev-hanoi-batch01?"
     transferJar $branch_name dev-hanoi-batch01
     yesNoSelection "Do you want to continue to transfer file to dev-hanoi-batch02?"
